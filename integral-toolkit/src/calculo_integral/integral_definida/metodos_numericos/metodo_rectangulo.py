@@ -1,20 +1,10 @@
-import math
+import math, sumas_riemann as riemann, functions as fun
 
-f = {
-    "x^2": lambda x: x**2,
-    "sin": lambda x: math.sin(x),
-    "cos": lambda x: math.cos(x),
-    "e^x": lambda x: math.exp(x),
-    }
+f = fun.functions
 
 def metodo_n(a,b,f,n):
     h = (b-a)/n
-    sum = 0
-
-    for i in range(0,n):
-        xi = (a+i*h)
-        sum += abs(f(xi))
-
+    sum = riemann.n(a,b,f,n)
     return sum*h
 
 def metodo_n10(a,b,f):

@@ -1,11 +1,6 @@
-import math
+import math, functions as fun
 
-f = {
-    "x^2": lambda x: x**2,
-    "sin": lambda x: math.sin(x),
-    "cos": lambda x: math.cos(x),
-    "e^x": lambda x: math.exp(x),
-    }
+f = fun.functions
 
 def h(a,b,n):
     return (b-a)/n

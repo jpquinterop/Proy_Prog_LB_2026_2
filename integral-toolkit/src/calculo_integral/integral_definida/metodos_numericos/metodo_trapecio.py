@@ -1,22 +1,12 @@
-import math
+import math, sumas_riemann as riemann, functions as fun
 
-f = {
-    "x^2": lambda x: x**2,
-    "sin": lambda x: math.sin(x),
-    "cos": lambda x: math.cos(x),
-    "e^x": lambda x: math.exp(x),
-    }
+f = fun.functions
 
 def compuesto_n(a,b,f,n):
     h = (b-a)/n
-    fa = f(a)
-    fb = f(b)
-    sum = 0
-    for i in range(1,n):
-        xi = a + i*h
-        sum+=abs(f(xi))
-
-    sum=(sum*2)+(fa+fb)
+    fa = abs(f(a))
+    fb = abs(f(b))
+    sum = 2*riemann.n(a,b,f,n) + (fa+fb)
     return (sum*h)/2
 
 def simple(a,b,f):
