@@ -1,11 +1,6 @@
-import math
+import functions as fun
 
-f = {
-    "x^2": lambda x: x**2,
-    "sin": lambda x: math.sin(x),
-    "cos": lambda x: math.cos(x),
-    "e^x": lambda x: math.exp(x),
-    }
+f = fun.functions
 
 def n(a,b,f,n):
     h = (b-a)/n
@@ -14,3 +9,19 @@ def n(a,b,f,n):
         xi = (a+i*h)
         sum += abs(f(xi))
     return sum*h
+
+def n_10(a,b,f):
+
+    return n(a,b,f,10)
+
+def n_100(a,b,f):
+    
+    return n(a,b,f,100)
+
+def n_1000(a,b,f):
+    
+    return n(a,b,f,1000)
+
+def n_10000(a,b,f):
+    
+    return n(a,b,f,10000)
