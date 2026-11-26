@@ -1,17 +1,17 @@
 import math
 
-from excepciones import (
-    ErrorIntegral,
-    ErrorRelativoIndefinidoError,
+from calculo_integral.exceptions.exception import (
+    ErrorIntegral, 
+    ErrorRelativoIndefinidoError, 
     MetodoDesconocidoError,
-    NoConvergenciaError,
+    NoConvergenciaError, 
     ParametroInvalidoError,
     LimitesInvalidosError,
-    funcion_segura,
-    validar_limites,
+    funcion_segura, 
+    validar_limites, 
     validar_no_negativo,
     validar_numero,
-    validar_positivo,
+    validar_positivo, 
     validar_subintervalos,
 )
 

@@ -2,10 +2,8 @@ import math, sumas_riemann as riemann, functions as fun
 
 f = fun.functions
 
-def n(a,b,f,n):
-    h = (b-a)/n
-    sum = riemann.n(a,b,f,n)
-    return sum*h
+def n(a, b, f, n):
+    return riemann.n(a, b, f, n)  
 
 def n10(a,b,f):
 

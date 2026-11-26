@@ -2,12 +2,10 @@ import math, sumas_riemann as riemann, functions as fun
 
 f = fun.functions
 
-def compuesto_n(a,b,f,n):
-    h = (b-a)/n
-    fa = abs(f(a))
-    fb = abs(f(b))
-    sum = 2*riemann.n(a,b,f,n) + (fa+fb)
-    return (sum*h)/2
+def compuesto_n(a, b, f, n):
+    h = (b - a) / n
+    interior = sum(f(a + i * h) for i in range(1, n))
+    return h * (f(a) / 2 + interior + f(b) / 2)
 
 def simple(a,b,f):
     h = b-a
