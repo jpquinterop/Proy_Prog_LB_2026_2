@@ -1,0 +1,11 @@
+Metadata-Version: 2.4
+Name: integral-toolkit
+Version: 0.1.0
+Summary: Librería de cálculo de áreas bajo la curva con métodos numéricos
+License-Expression: GPL-3.0-only
+Requires-Python: >=3.9
+Requires-Dist: numpy
+Requires-Dist: matplotlib
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: pytest-cov; extra == "dev"

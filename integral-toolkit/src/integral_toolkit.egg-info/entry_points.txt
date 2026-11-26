@@ -1,0 +1,2 @@
+[console_scripts]
+integral-toolkit = calculo_integral.main:main

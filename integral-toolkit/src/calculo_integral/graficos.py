@@ -19,7 +19,7 @@ from calculo_integral.integral_definida.metodos_numericos.calculo_errores import
 )
 
 METODOS_DIBUJABLES = ("rectangulo", "punto_medio", "trapecio", "simpson_13", "simpson_38")
-N_MAX_DIBUJO = 200
+N_MAX_DIBUJO = 100000
 
 _COLOR_NEGATIVO = "#D62728"
 _COLORES = {
