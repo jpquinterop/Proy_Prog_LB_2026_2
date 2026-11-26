@@ -1,34 +1,97 @@
+import argparse
+import ast
 import math
+import operator
+import sys
 
-import pytest
+from calculo_integral import METODOS, __version__, listar_funciones, obtener_funcion
+from calculo_integral.exceptions.exception import ErrorIntegral
+from calculo_integral.integral_definida.metodos_numericos.calculo_errores import (
+    error_absoluto,
+    error_por_refinamiento,
+    error_relativo,
+)
 
-import functions as fun
+_OPERADORES = {
+    ast.Add: operator.add, ast.Sub: operator.sub, ast.Mult: operator.mul,
+    ast.Div: operator.truediv, ast.Pow: operator.pow,
+    ast.USub: operator.neg, ast.UAdd: operator.pos,
+}
+_CONSTANTES = {"pi": math.pi, "e": math.e}
 
-F = fun.functions
+def _evaluar(nodo):
+    if isinstance(nodo, ast.Expression):
+        return _evaluar(nodo.body)
+    if isinstance(nodo, ast.Constant) and isinstance(nodo.value, (int, float)):
+        return nodo.value
+    if isinstance(nodo, ast.Name) and nodo.id in _CONSTANTES:
+        return _CONSTANTES[nodo.id]
+    if isinstance(nodo, ast.BinOp) and type(nodo.op) in _OPERADORES:
+        return _OPERADORES[type(nodo.op)](_evaluar(nodo.left), _evaluar(nodo.right))
+    if isinstance(nodo, ast.UnaryOp) and type(nodo.op) in _OPERADORES:
+        return _OPERADORES[type(nodo.op)](_evaluar(nodo.operand))
+    raise ValueError("expresión no permitida")
 
-VALORES = [
-    ("c", 7, 1), ("x", 3, 3), ("-x", 3, -3), ("2x", 3, 6), ("x^2", 3, 9), ("x^3", -2, -8),
-    ("x^4", 2, 16), ("x^2+1", 2, 5), ("x^3-2x+1", 2, 5), ("|x|", -4, 4), ("1/x", 4, 0.25),
-    ("1/x^2", 2, 0.25), ("1/(1+x^2)", 1, 0.5), ("sqrt(x)", 9, 3), ("cbrt(x)", -8, -2),
-    ("sin", math.pi / 2, 1), ("cos", 0, 1), ("sin^2", math.pi / 2, 1), ("cos^2", 0, 1),
-    ("sin(x^2)", 0, 0), ("x*sin(x)", math.pi / 2, math.pi / 2),
-    ("asin", 1, math.pi / 2), ("acos", 1, 0), ("atan", 1, math.pi / 4),
-    ("e^x", 0, 1), ("e^-x", 0, 1), ("e^(x^2)", 0, 1), ("e^(-x^2)", 0, 1), ("2^x", 3, 8),
-    ("ln", math.e, 1), ("log10", 1000, 3), ("log2", 8, 3), ("x*ln(x)", math.e, math.e),
-    ("x*e^x", 1, math.e), ("semicirculo", 0, 1), ("semielipse", 0, 1),
-    ("parabola", 2, 1), ("triangulo", 0, 1),
-]
+def numero(texto):
+    try:
+        return float(_evaluar(ast.parse(texto.strip(), mode="eval")))
+    except (ValueError, SyntaxError, ZeroDivisionError, OverflowError, TypeError):
+        raise argparse.ArgumentTypeError(f"'{texto}' no es un número válido") from None
 
-def test_el_registro_no_esta_vacio_y_todo_es_callable():
-    assert len(F) > 30 and all(callable(f) for f in F.values())
+def crear_parser():
+    p = argparse.ArgumentParser(
+        prog="integral-toolkit",
+        description="Área bajo la curva (usa |f|) con métodos numéricos.",
+    )
+    p.add_argument("-f", "--funcion", help="nombre de la función (ver --listar)")
+    p.add_argument("-a", type=numero, help="límite inferior (acepta pi, 2*pi, ...)")
+    p.add_argument("-b", type=numero, help="límite superior")
+    p.add_argument("-m", "--metodo", choices=sorted(METODOS), default="simpson_13")
+    p.add_argument("-n", type=int, default=100, help="subintervalos (por defecto 100)")
+    p.add_argument("--exacto", type=numero, help="valor exacto del área, para calcular el error")
+    p.add_argument("--graficar", action="store_true", help="muestra la gráfica")
+    p.add_argument("--guardar", metavar="ARCHIVO", help="guarda la gráfica en un archivo")
+    p.add_argument("--listar", action="store_true", help="lista las funciones disponibles")
+    p.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
+    return p
 
-@pytest.mark.parametrize("nombre,x,esperado", VALORES, ids=[v[0] for v in VALORES])
-def test_valor_de_cada_funcion(nombre, x, esperado):
-    assert F[nombre](x) == pytest.approx(esperado)
+def main(argv=None):
+    parser = crear_parser()
+    args = parser.parse_args(argv)
 
-def test_todas_las_funciones_estan_cubiertas_por_los_tests():
-    assert set(F) == {v[0] for v in VALORES}
+    if args.listar:
+        print("\n".join(listar_funciones()))
+        return 0
+    if args.funcion is None or args.a is None or args.b is None:
+        parser.error("se requieren --funcion, -a y -b (o usa --listar)")
 
-def test_cbrt_conserva_el_signo():
-    assert F["cbrt(x)"](-27) == pytest.approx(-3)
-    assert F["cbrt(x)"](27) == pytest.approx(3)
+    try:
+        f = obtener_funcion(args.funcion)
+        metodo = METODOS[args.metodo]
+        area = metodo(args.a, args.b, f, args.n)
+
+        print(f"Función  : {args.funcion}")
+        print(f"Intervalo: [{args.a:g}, {args.b:g}]")
+        print(f"Método   : {args.metodo} (n = {args.n})")
+        print(f"Área ≈ {area:.8f}")
+        print(f"Error estimado (refinamiento): {error_por_refinamiento(metodo, args.a, args.b, f, args.n):.3e}")
+        if args.exacto is not None:
+            print(f"Error absoluto: {error_absoluto(args.exacto, area):.3e}")
+            if args.exacto != 0:
+                print(f"Error relativo: {error_relativo(args.exacto, area):.3e}")
+
+        if args.graficar or args.guardar:
+            from calculo_integral.graficos import graficar_area  # matplotlib solo si hace falta
+
+            graficar_area(
+                f, args.a, args.b, n=args.n, metodo=args.metodo, exacto=args.exacto,
+                metodo_fn=metodo, guardar=args.guardar, mostrar=args.graficar,
+            )
+    except ErrorIntegral as e:
+        print(f"Error: {e}", file=sys.stderr)
+        return 1
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

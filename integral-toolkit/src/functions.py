@@ -49,3 +49,19 @@ functions = {
     "parabola":    lambda x: x**2 / 4,
     "triangulo":   lambda x: 1 - abs(x),                 # [-1, 1]
 }
+
+import difflib
+
+from calculo_integral.exceptions.exception import FuncionDesconocidaError
+
+def listar_funciones():
+    """Nombres disponibles, ordenados."""
+    return sorted(functions)
+
+def obtener_funcion(nombre):
+    try:
+        return functions[nombre]
+    except (KeyError, TypeError):
+        cercanas = difflib.get_close_matches(str(nombre), functions, n=3)
+        pista = f" ¿Quisiste decir: {', '.join(cercanas)}?" if cercanas else ""
+        raise FuncionDesconocidaError(f"La función '{nombre}' no existe.{pista}") from None

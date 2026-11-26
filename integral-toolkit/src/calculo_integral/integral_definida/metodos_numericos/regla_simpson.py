@@ -1,16 +1,19 @@
 import math, functions as fun
 
+from calculo_integral.exceptions.exception import controlar_integracion
+
 f = fun.functions
 
 def h_fun(a,b,n):
     return (b-a)/n
 
+@controlar_integracion
 def compuesto13_n(a,b,f,n):
     if n % 2 != 0:
-        n += 2 - n % 2 
+        n += 2 - n % 2
 
-    f0 = abs(f(a))    
-    fn = abs(f(b))    
+    f0 = abs(f(a))
+    fn = abs(f(b))
     sum1 = 0
     sum2 = 0
     h = h_fun(a,b,n)
@@ -24,9 +27,10 @@ def compuesto13_n(a,b,f,n):
     totalSum = (h/3)*(f0 + (2*sum1) + (4*sum2) + fn)
     return totalSum
 
+@controlar_integracion
 def compuesto38_n(a, b, f, n):
     if n % 3 != 0:
-        n += 3 - n % 3        
+        n += 3 - n % 3
 
     h = h_fun(a,b,n)
     f0 = abs(f(a))
@@ -54,7 +58,7 @@ def compuesto13_n100(a,b,f):
     return compuesto13_n(a,b,f,100)
 
 def compuesto13_n1000(a,b,f):
-    
+
     return compuesto13_n(a,b,f,1000)
 
 def compuesto13_n10000(a,b,f):
@@ -77,21 +81,19 @@ def compuesto38_n12000(a,b,f):
 
     return compuesto38_n(a,b,f,12000)
 
+@controlar_integracion
 def simple_13(a,b,f):
     ba = b-a
     fa = abs(f(a))
     fb = abs(f(b))
     fmid = abs(f((a+b)/2))
-    sum = 0 
-    sum+=(ba/6)*(fa+(4*fmid)+fb)
-    return sum
+    return (ba/6)*(fa + 4*fmid + fb)
 
+@controlar_integracion
 def simple38(a,b,f):
     fa = abs(f(a))
     fb = abs(f(b))
-    h = abs((b-a))/3
+    h = (b-a)/3
     f2ab = abs(f((2*a+b)/3))
-    fa2b = abs(f((a+(2*b))/3))
-    sum = 3*(h/8)*(fa + (3*f2ab) + (3*fa2b) + fb)
-
-    return sum
+    fa2b = abs(f((a+2*b)/3))
+    return 3*(h/8)*(fa + 3*f2ab + 3*fa2b + fb)
