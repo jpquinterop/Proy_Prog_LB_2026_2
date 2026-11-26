@@ -9,8 +9,8 @@ def compuesto13_n(a,b,f,n):
     if n % 2 != 0:
         n += 2 - n % 2 
 
-    f0 = f(a)
-    fn = f(b)
+    f0 = abs(f(a))    
+    fn = abs(f(b))    
     sum1 = 0
     sum2 = 0
     h = h_fun(a,b,n)
@@ -79,19 +79,19 @@ def compuesto38_n12000(a,b,f):
 
 def simple_13(a,b,f):
     ba = b-a
-    fa = f(a)
-    fb = f(b)
-    fmid = f((a+b)/2)
+    fa = abs(f(a))
+    fb = abs(f(b))
+    fmid = abs(f((a+b)/2))
     sum = 0 
     sum+=(ba/6)*(fa+(4*fmid)+fb)
     return sum
 
 def simple38(a,b,f):
-    fa = f(a)
-    fb = f(b)
-    h = (b-a)/3
-    f2ab = f((2*a+b)/3)
-    fa2b = f((a+(2*b))/3)
+    fa = abs(f(a))
+    fb = abs(f(b))
+    h = abs((b-a))/3
+    f2ab = abs(f((2*a+b)/3))
+    fa2b = abs(f((a+(2*b))/3))
     sum = 3*(h/8)*(fa + (3*f2ab) + (3*fa2b) + fb)
 
     return sum

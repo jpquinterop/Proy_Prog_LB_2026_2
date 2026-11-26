@@ -1,11 +1,14 @@
 import functions as fun
 
+from calculo_integral.exceptions.exception import controlar_integracion
+
 f = fun.functions
 
+@controlar_integracion
 def n(a,b,f,n):
     h = (b-a)/n
     sum = 0
-    for i in range(1,n):
+    for i in range(n):
         xi = (a+i*h)
         sum += abs(f(xi))
     return sum*h
