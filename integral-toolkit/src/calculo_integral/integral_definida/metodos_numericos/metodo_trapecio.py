@@ -4,8 +4,8 @@ f = fun.functions
 
 def compuesto_n(a, b, f, n):
     h = (b - a) / n
-    interior = sum(f(a + i * h) for i in range(1, n))
-    return h * (f(a) / 2 + interior + f(b) / 2)
+    interior = sum(abs(f(a + i * h)) for i in range(1, n))
+    return h * (abs(f(a)) / 2 + interior + abs(f(b)) / 2)
 
 def simple(a,b,f):
     h = b-a

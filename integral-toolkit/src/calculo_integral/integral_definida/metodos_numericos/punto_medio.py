@@ -7,9 +7,7 @@ def mid_n(a,b,f,n):
     sum = 0
 
     for i in range(n):
-        xi_1 = a + (i-1)*h
-        xi = a + i*h
-        midXi = (xi_1 + xi)/2
+        midXi = a + (i + 0.5) * h
         sum += abs(f(midXi))
 
     return h*sum
