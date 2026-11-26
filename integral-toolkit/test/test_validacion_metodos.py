@@ -2,12 +2,12 @@ import math
 
 import pytest
 
-import functions as fun
-import metodo_rectangulo as rect
-import metodo_trapecio as trap
-import punto_medio as pm
-import regla_simpson as simp
-import sumas_riemann as riemann
+from calculo_integral import functions as fun
+from calculo_integral.integral_definida.metodos_numericos import metodo_rectangulo as rect
+from calculo_integral.integral_definida.metodos_numericos import metodo_trapecio as trap
+from calculo_integral.integral_definida.metodos_numericos import punto_medio as pm
+from calculo_integral.integral_definida.metodos_numericos import regla_simpson as simp
+from calculo_integral.integral_definida import sumas_riemann as riemann
 from calculo_integral.exceptions.exception import (
     ErrorIntegral,
     EvaluacionError,

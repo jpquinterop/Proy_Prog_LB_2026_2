@@ -2,8 +2,8 @@ import math
 
 import pytest
 
-import functions as fun
-import metodo_trapecio as trap
+from calculo_integral import functions as fun
+from calculo_integral.integral_definida.metodos_numericos import metodo_trapecio as trap
 from calculo_integral.exceptions import exception as ex
 
 F = fun.functions

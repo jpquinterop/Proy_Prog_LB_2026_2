@@ -2,9 +2,9 @@ import math
 
 import pytest
 
-import functions as fun
-import metodo_trapecio as trap
-import regla_simpson as simp
+from calculo_integral import functions as fun
+from calculo_integral.integral_definida.metodos_numericos import metodo_trapecio as trap
+from calculo_integral.integral_definida.metodos_numericos import regla_simpson as simp
 from calculo_integral.exceptions.exception import (
     ErrorRelativoIndefinidoError,
     LimitesInvalidosError,

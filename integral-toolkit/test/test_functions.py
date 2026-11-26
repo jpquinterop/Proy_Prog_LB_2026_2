@@ -3,7 +3,7 @@ import math
 
 import pytest
 
-import functions as fun
+from calculo_integral import functions as fun
 
 F = fun.functions
 
