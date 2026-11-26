@@ -16,13 +16,11 @@ from calculo_integral.exceptions.exception import (
 )
 
 def error_absoluto(exacto, aproximado):
-    """|exacto - aproximado|"""
     validar_numero(exacto, "exacto")
     validar_numero(aproximado, "aproximado")
     return abs(exacto - aproximado)
 
 def error_relativo(exacto, aproximado):
-    """|exacto - aproximado| / |exacto|. No está definido si exacto == 0."""
     validar_numero(exacto, "exacto")
     validar_numero(aproximado, "aproximado")
     if exacto == 0:
@@ -33,26 +31,15 @@ def error_relativo(exacto, aproximado):
     return abs(exacto - aproximado) / abs(exacto)
 
 def error_porcentual(exacto, aproximado):
-    """Error relativo expresado en %."""
     return error_relativo(exacto, aproximado) * 100
 
 def error_por_refinamiento(metodo, a, b, f, n):
-    """
-    Estima el error de I(n) sin conocer el valor exacto:
-        |I(2n) - I(n)|
-    Es una cota razonable del error de I(n) cuando el método ya converge.
-    """
     validar_limites(a, b)
     validar_subintervalos(n)
     return abs(metodo(a, b, f, 2 * n) - metodo(a, b, f, n))
 
 
 def refinar_hasta_tolerancia(metodo, a, b, f, tol=1e-6, n_inicial=10, n_max=100_000):
-    """
-    Duplica n hasta que |I(2n) - I(n)| < tol.
-    Devuelve (aproximacion, n_usado, error_estimado).
-    Lanza NoConvergenciaError si no converge antes de n_max.
-    """
     validar_limites(a, b)
     validar_subintervalos(n_inicial)
     validar_positivo(tol, "tol")
@@ -81,11 +68,6 @@ ORDEN_TEORICO = {
 
 
 def orden_convergencia(metodo, a, b, f, n, exacto):
-    """
-    p ≈ log2( e(n) / e(2n) ).
-    Debería dar ≈1 (rectángulo), ≈2 (trapecio, punto medio), ≈4 (Simpson).
-    Devuelve math.inf si el método es exacto para esa función (error 0).
-    """
     validar_limites(a, b)
     validar_subintervalos(n)
     e1 = error_absoluto(exacto, metodo(a, b, f, n))
@@ -113,11 +95,6 @@ def _constante_cota(metodo_nombre):
 
 
 def estimar_max_derivada(f, a, b, orden, muestras=1000, h=1e-2):
-    """
-    Estima max |f^(orden)(x)| en [a, b] (orden = 1, 2 o 4) con diferencias
-    finitas centradas, muestreando el intervalo. Es una ESTIMACIÓN, no una
-    cota rigurosa. Evita los bordes para no salirse del dominio de f.
-    """
     validar_limites(a, b)
     if orden not in (1, 2, 4):
         raise ParametroInvalidoError(f"orden debe ser 1, 2 o 4 (recibido: {orden}).")
