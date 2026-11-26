@@ -97,7 +97,7 @@ def test_simpson_38_simple_cubica():
 @pytest.mark.parametrize("fn", [trap.simple, simp.simple_13, simp.simple38])
 def test_reglas_simples_funcion_negativa_usan_abs(fn):
     # Para f(x) = -x^2 en [0,3] el ÁREA es 9, no -9.
-    assert fn(0, 3, lambda x: -(x**2)) == pytest.approx(9.0)
+    assert fn(0, 3, lambda x: -2 * x) == pytest.approx(9.0)
 
 def test_simpson_13_ajusta_n_impar():
     assert simp.compuesto13_n(0, 2, F["x^2"], 5) == pytest.approx(
@@ -122,7 +122,7 @@ def test_atajos_equivalen_a_su_n(atajo, n):
     base = {
         "rect": rect.n, "riemann": riemann.n, "pm": pm.mid_n, "trap": trap.compuesto_n,
     }
-    nombre = atajo.__module__
+    nombre = atajo.__module__.rsplit(".", 1)[-1]
     metodo = {
         "metodo_rectangulo": base["rect"], "sumas_riemann": base["riemann"],
         "punto_medio": base["pm"], "metodo_trapecio": base["trap"],

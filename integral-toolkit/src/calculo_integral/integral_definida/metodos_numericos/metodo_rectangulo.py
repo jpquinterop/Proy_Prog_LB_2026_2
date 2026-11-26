@@ -1,8 +1,6 @@
-import math, sumas_riemann as riemann, functions as fun
+from calculo_integral.integral_definida import sumas_riemann as riemann
 
 from calculo_integral.exceptions.exception import controlar_integracion
-
-f = fun.functions
 
 @controlar_integracion
 def n(a, b, f, n):

@@ -1,8 +1,4 @@
-import math, functions as fun
-
 from calculo_integral.exceptions.exception import controlar_integracion
-
-f = fun.functions
 
 def h_fun(a,b,n):
     return (b-a)/n

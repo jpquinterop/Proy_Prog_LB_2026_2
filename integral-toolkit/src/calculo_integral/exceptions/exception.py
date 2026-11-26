@@ -48,6 +48,9 @@ class ErrorRelativoIndefinidoError(ErrorIntegral, ZeroDivisionError):
 class NoConvergenciaError(ErrorIntegral, RuntimeError):
     """El refinamiento no alcanzó la tolerancia pedida."""
 
+class FuncionDesconocidaError(ErrorIntegral, ValueError):
+    """La función pedida no está en functions.py."""
+
 def _es_real(v):
     return isinstance(v, numbers.Real) and not isinstance(v, bool)
 
@@ -186,7 +189,7 @@ def validar_dominio(nombre, a, b):
 
 def nombre_de_funcion(f):
     try:
-        from functions import functions as registro
+        from calculo_integral.functions import functions as registro
     except ImportError:
         return None
     original = getattr(f, "_original", f)

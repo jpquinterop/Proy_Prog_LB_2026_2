@@ -1,8 +1,4 @@
-import math, functions as fun
-
 from calculo_integral.exceptions.exception import controlar_integracion
-
-f = fun.functions
 
 @controlar_integracion
 def mid_n(a,b,f,n):
