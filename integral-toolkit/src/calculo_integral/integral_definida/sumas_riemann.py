@@ -5,7 +5,7 @@ f = fun.functions
 def n(a,b,f,n):
     h = (b-a)/n
     sum = 0
-    for i in range(0,n):
+    for i in range(1,n):
         xi = (a+i*h)
         sum += abs(f(xi))
     return sum*h

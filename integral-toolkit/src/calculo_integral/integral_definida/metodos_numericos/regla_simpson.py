@@ -2,7 +2,7 @@ import math, functions as fun
 
 f = fun.functions
 
-def h(a,b,n):
+def h_fun(a,b,n):
     return (b-a)/n
 
 def compuesto13_n(a,b,f,n):
@@ -13,7 +13,7 @@ def compuesto13_n(a,b,f,n):
     fn = f(b)
     sum1 = 0
     sum2 = 0
-    h = h(a,b,n)
+    h = h_fun(a,b,n)
     for i in range(1, n):
         xi = a + i*h
         if i % 2 == 0:
@@ -28,7 +28,7 @@ def compuesto38_n(a, b, f, n):
     if n % 3 != 0:
         n += 3 - n % 3        
 
-    h = h(a,b,n)
+    h = h_fun(a,b,n)
     f0 = abs(f(a))
     fn = abs(f(b))
     sum1 = sum2 = sum3 = 0

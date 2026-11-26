@@ -6,7 +6,7 @@ def mid_n(a,b,f,n):
     h = (b-a)/n
     sum = 0
 
-    for i in range(1,n):
+    for i in range(n):
         xi_1 = a + (i-1)*h
         xi = a + i*h
         midXi = (xi_1 + xi)/2
